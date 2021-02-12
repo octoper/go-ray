@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"os"
 	"ray/payloads"
 )
+
+type Callable func() bool
 
 var rayHost = "127.0.0.1"
 var rayPort = 23517
@@ -139,6 +142,16 @@ func (r *Ray) Html(html string) *Ray {
 	return r.SendRequest(payloads.NewHtmlPayload(html))
 }
 
+// Notify
+func (r *Ray) Notify(text string) *Ray {
+	return r.SendRequest(payloads.NewNotifyPayload(text))
+}
+
+// Pass
+func (r *Ray) Pass(arg interface{}) *Ray {
+	return r.Send(arg)
+}
+
 // Boolean
 func (r *Ray) Bool(bool bool) *Ray {
 	return r.SendRequest(payloads.NewBoolPayload(bool))
@@ -152,6 +165,54 @@ func (r *Ray) Null() *Ray {
 // Charles
 func (r *Ray) Charles() *Ray {
 	return r.Send("🎶 🎹 🎷 🕺")
+}
+
+// Charles
+func (r *Ray) Ban() *Ray {
+	return r.Send("🕶")
+}
+
+// Die
+func (r *Ray) Die() {
+	os.Exit(1)
+}
+
+// Show When
+func (r *Ray) ShowWhen(show interface{}) *Ray {
+	switch show.(type) {
+	case Callable:
+		show = show.(Callable)
+	}
+
+	if !show.(bool) {
+		return r.Remove()
+	}
+
+	return r
+}
+
+// Show If
+func (r *Ray) ShowIf(show interface{}) *Ray {
+	return r.ShowWhen(show)
+}
+
+// Remove When
+func (r *Ray) RemoveWhen(show interface{}) *Ray {
+	switch show.(type) {
+	case Callable:
+		show = show.(Callable)
+	}
+
+	if show.(bool) {
+		return r.Remove()
+	}
+
+	return r
+}
+
+// Remove If
+func (r *Ray) RemoveIf(show interface{}) *Ray {
+	return r.RemoveWhen(show)
 }
 
 // Set the host Ray is running
