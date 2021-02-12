@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func NewImagePayload(location string) *CustomPayload {
+func NewImagePayload(location string) Payload {
 	if utils.FileExists(location) {
 		location = path.Join(path.Dir(location))
 	}

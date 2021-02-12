@@ -1,5 +1,5 @@
 package payloads
 
-func NewNullPayload() *CustomPayload {
+func NewNullPayload() Payload {
 	return NewCustomPayload(nil, "Null")
 }

@@ -1,12 +1,7 @@
 package payloads
 
-type LogPayload struct {
-	Type string `json:"type"`
-	Content interface{} `json:"content"`
-}
-
-func NewLogPayload(values interface{}) *LogPayload {
-	return &LogPayload{
+func NewLogPayload(values interface{}) Payload {
+	return Payload{
 		Type: "log",
 		Content: map[string]interface{} {
 			"value": values,

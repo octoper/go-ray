@@ -1,11 +1,7 @@
 package payloads
 
-type ShowAppPayload struct {
-	Type string `json:"type"`
-}
-
-func NewShowAppPayload() *ShowAppPayload {
-	return &ShowAppPayload{
+func NewShowAppPayload() Payload {
+	return Payload{
 		Type: "show_app",
 	}
 }

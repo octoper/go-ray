@@ -1,11 +1,7 @@
 package payloads
 
-type ClearScreenPayload struct {
-	Type string `json:"type"`
-}
-
-func NewClearScreenPayload() *ClearScreenPayload {
-	return &ClearScreenPayload{
+func NewClearScreenPayload() Payload {
+	return Payload{
 		Type: "new_screen",
 	}
 }

@@ -2,18 +2,13 @@ package payloads
 
 import "encoding/json"
 
-type JsonStringPayload struct {
-	Type string `json:"type"`
-	Content interface{} `json:"content"`
-}
-
-func NewJsonStringPayload(value string) *JsonStringPayload {
+func NewJsonStringPayload(value string) Payload {
 	json, err := json.Marshal(value)
 	if err != nil {
 		panic(err)
 	}
 
-	return &JsonStringPayload{
+	return Payload{
 		Type: "json_string",
 		Content: map[string]interface{} {
 			"value": string(json),

@@ -9,5 +9,5 @@ func Test_Ray(t *testing.T) {
 	//ray("Hey").Html("<span>Hey</span>")
 	//ray("Hey").Bool(false)
 	//ray("Hey").Null()
-	Ray().Image("./heyyy.jpg")
+	Ray("hey", "new")
 }

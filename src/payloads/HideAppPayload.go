@@ -1,11 +1,7 @@
 package payloads
 
-type HideAppPayload struct {
-	Type string `json:"type"`
-}
-
-func NewHideAppPayload() *HideAppPayload {
-	return &HideAppPayload{
+func NewHideAppPayload() Payload {
+	return Payload{
 		Type: "hide_app",
 	}
 }

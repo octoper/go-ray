@@ -1,11 +1,7 @@
 package payloads
 
-type RemovePayload struct {
-	Type string `json:"type"`
-}
-
-func NewRemovePayload() *RemovePayload {
-	return &RemovePayload{
+func NewRemovePayload() Payload {
+	return Payload{
 		Type: "remove",
 	}
 }

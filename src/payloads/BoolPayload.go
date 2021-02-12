@@ -1,5 +1,5 @@
 package payloads
 
-func NewBoolPayload(bool bool) *CustomPayload {
+func NewBoolPayload(bool bool) Payload {
 	return NewCustomPayload(bool, "Boolean")
 }

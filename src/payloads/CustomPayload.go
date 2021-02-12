@@ -1,12 +1,7 @@
 package payloads
 
-type CustomPayload struct {
-	Type string `json:"type"`
-	Content interface{} `json:"content"`
-}
-
-func NewCustomPayload(content interface{}, label string) *CustomPayload {
-	return &CustomPayload{
+func NewCustomPayload(content interface{}, label string) Payload {
+	return Payload{
 		Type: "custom",
 		Content: map[string]interface{} {
 			"content": content,

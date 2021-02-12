@@ -10,8 +10,10 @@ import (
 
 type Callable func() bool
 
-var rayHost = "127.0.0.1"
-var rayPort = 23517
+var (
+	rayHost = "127.0.0.1"
+	rayPort = 23517
+)
 
 type Application struct {
 	uuid string
@@ -35,6 +37,7 @@ func Ray(values ...interface{}) *Application {
 	return r
 }
 
+// Create New Ray instance
 func NewRay() *Application {
 	ray := Application{
 		uuid: uuid.New().String(),
@@ -148,8 +151,9 @@ func (r *Application) Notify(text string) *Application {
 }
 
 // Pass
-func (r *Application) Pass(arg interface{}) *Application {
-	return r.Send(arg)
+func (r *Application) Pass(arg interface{}) interface{} {
+	r.Send(arg)
+	return arg
 }
 
 // Boolean

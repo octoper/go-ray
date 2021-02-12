@@ -1,12 +1,7 @@
 package payloads
 
-type NotifyPayload struct {
-	Type string `json:"type"`
-	Content interface{} `json:"content"`
-}
-
-func NewNotifyPayload(value string) *NotifyPayload {
-	return &NotifyPayload{
+func NewNotifyPayload(value string) Payload {
+	return Payload{
 		Type: "log",
 		Content: map[string]interface{} {
 			"value": value,
