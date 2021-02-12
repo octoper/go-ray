@@ -8,10 +8,15 @@ type JsonStringPayload struct {
 }
 
 func NewJsonStringPayload(value string) *JsonStringPayload {
+	json, err := json.Marshal(value)
+	if err != nil {
+		panic(err)
+	}
+
 	return &JsonStringPayload{
 		Type: "json_string",
 		Content: map[string]interface{} {
-			"value": json.Marshal(value),
+			"value": string(json),
 		},
 	}
 }
