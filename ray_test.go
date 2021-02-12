@@ -1,7 +1,6 @@
-package tests
+package ray
 
 import (
-	. "ray"
 	"testing"
 )
 
