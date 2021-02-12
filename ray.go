@@ -167,7 +167,17 @@ func (r *Ray) Charles() *Ray {
 	return r.Send("🎶 🎹 🎷 🕺")
 }
 
-// Charles
+// String
+func (r *Ray) String(str string) *Ray {
+	return r.SendRequest(payloads.NewStringPayload(str))
+}
+
+// Json String
+func (r *Ray) Json(json string) *Ray {
+	return r.SendRequest(payloads.NewJsonStringPayload(json))
+}
+
+// Ban
 func (r *Ray) Ban() *Ray {
 	return r.Send("🕶")
 }
