@@ -1,11 +1,11 @@
-package ray
+package src
 
 import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/octoper/ray/payloads"
 	"os"
-	"ray/payloads"
 )
 
 type Callable func() bool
@@ -177,6 +177,11 @@ func (r *Application) Json(json string) *Application {
 	return r.SendRequest(payloads.NewJsonStringPayload(json))
 }
 
+// Image
+func (r *Application) Image(value string) *Application {
+	return r.SendRequest(payloads.NewImagePayload(value))
+}
+
 // Ban
 func (r *Application) Ban() *Application {
 	return r.Send("🕶")
@@ -232,6 +237,11 @@ func (r *Application) SendRequest(payloads interface{}) *Application {
 		Payloads: payloads,
 		Meta:     "",
 	}
+
+	//file, line := utils.GetBackTrace()
+	//
+	//fmt.Println(file)
+	//fmt.Println(line)
 
 	requestJson, _ := json.Marshal(requestPayload)
 
