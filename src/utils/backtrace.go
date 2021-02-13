@@ -9,8 +9,8 @@ type Origin struct {
 	line int
 }
 
-func GetBackTrace() (string, int) {
-	_, fn, line, _ := runtime.Caller(3)
+func GetBackTrace(depth int) (string, int) {
+	_, fn, line, _ := runtime.Caller(depth)
 
 	return fn, line
 }

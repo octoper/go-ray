@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/octoper/ray/payloads"
+	"github.com/octoper/ray/utils"
 	"os"
+	"strconv"
+	"time"
 )
 
 type Callable func() bool
@@ -24,7 +27,7 @@ type Application struct {
 type Request struct {
 	Uuid     string      `json:"uuid"`
 	Payloads interface{} `json:"payloads"`
-	Meta     string      `json:"meta"`
+	Meta     map[string]string     `json:"meta"`
 }
 
 func Ray(values ...interface{}) *Application {
@@ -49,7 +52,7 @@ func NewRay() *Application {
 
 // Send Values
 func (r *Application) Send(values ...interface{}) *Application {
-	var payloadsMap []interface{}
+	var payloadsMap []payloads.Payload
 
 	for _, payload := range values {
 		switch payload.(type) {
@@ -62,7 +65,7 @@ func (r *Application) Send(values ...interface{}) *Application {
 		}
 	}
 
-	return r.SendRequest(payloadsMap)
+	return r.SendRequest(payloadsMap...)
 }
 
 // Get the UUID
@@ -176,6 +179,11 @@ func (r *Application) String(str string) *Application {
 	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
+// Time
+func (r *Application) Time(time time.Time) *Application {
+	return r.SendRequest(payloads.NewTimePayload(time, "2021-02-13 18:38:20"))
+}
+
 // Json String
 func (r *Application) Json(json string) *Application {
 	return r.SendRequest(payloads.NewJsonStringPayload(json))
@@ -234,15 +242,37 @@ func (r *Application) RemoveIf(show interface{}) *Application {
 	return r.RemoveWhen(show)
 }
 
+func flatten(m [][]interface{}) []interface{} {
+	return m[0][:cap(m[0])]
+}
+
+
 // Set the host Application is running
-func (r *Application) SendRequest(payloads interface{}) *Application {
-	requestPayload := Request{
-		Uuid:     r.Uuid(),
-		Payloads: payloads,
-		Meta:     "",
+func (r *Application) SendRequest(ResponsePayloads ...payloads.Payload) *Application {
+	file, line := utils.GetBackTrace(4)
+
+	var payloadsMap []payloads.Payload
+
+	for _, payload := range ResponsePayloads {
+		payload.Origin = map[string]string {
+			"file": file,
+			"line_number": strconv.Itoa(line),
+		}
+
+		payloadsMap = append(payloadsMap, payload)
 	}
 
-	//file, line := utils.GetBackTrace()
+	m := map[string]interface{} {
+		"uuid":     r.Uuid(),
+		"payloads": payloadsMap,
+		"meta": map[string]string {
+			"ray_package_version": "dev-master",
+		},
+	}
+
+	requestPayload := m
+
+	//
 	//
 	//fmt.Println(file)
 	//fmt.Println(line)
@@ -251,16 +281,21 @@ func (r *Application) SendRequest(payloads interface{}) *Application {
 
 	fmt.Println(string(requestJson))
 
-	//req, _ := http.NewRequest("POST", "http://" + r.Host() +":"+ string(r.Port()), bytes.NewBuffer(requestJson))
-	//req.Header.Set("Content-Type", "application/json")
-	//
-	//client := &http.Client{}
-	//
-	//resp, err := client.Do(req)
+	//responseBody := bytes.NewBuffer(requestJson)
+	////Leverage Go's HTTP Post function to make request
+	//resp, err := http.Post("http://127.0.0.1:23517", "application/json", responseBody)
+	////Handle Error
 	//if err != nil {
-	//	panic(err)
+	//	log.Fatalf("An Error Occured %v", err)
 	//}
 	//defer resp.Body.Close()
+	////Read the response body
+	//body, err := ioutil.ReadAll(resp.Body)
+	//if err != nil {
+	//	log.Fatalln(err)
+	//}
+	//sb := string(body)
+	//log.Printf(sb)
 
 	return r
 }
