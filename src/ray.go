@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/octoper/ray/payloads"
-	"github.com/octoper/ray/utils"
 	"os"
-	"strconv"
 	"time"
 )
 
@@ -249,14 +247,14 @@ func flatten(m [][]interface{}) []interface{} {
 
 // Set the host Application is running
 func (r *Application) SendRequest(ResponsePayloads ...payloads.Payload) *Application {
-	file, line := utils.GetBackTrace(4)
+	//file, line := utils.GetBackTrace(4)
 
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range ResponsePayloads {
 		payload.Origin = map[string]string {
-			"file": file,
-			"line_number": strconv.Itoa(line),
+			"file": "",
+			"line_number": "",
 		}
 
 		payloadsMap = append(payloadsMap, payload)
