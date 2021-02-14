@@ -2,7 +2,7 @@ package payloads
 
 import "encoding/json"
 
-func NewJsonStringPayload(value string) Payload {
+func NewJsonStringPayload(value interface{}) Payload {
 	json, err := json.Marshal(value)
 	if err != nil {
 		panic(err)
