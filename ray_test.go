@@ -5,5 +5,5 @@ import (
 )
 
 func Test_Ray(t *testing.T) {
-	Ray().Notify("Heyyy")
+	Ray().HideApp()
 }
