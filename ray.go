@@ -27,7 +27,6 @@ type Request struct {
 }
 
 var ApplicationConfig = Application {
-	uuid: uuid.New().String(),
 	host: "127.0.0.1",
 	port: 23517,
 }
@@ -66,6 +65,8 @@ func (r *Application) SetHost(host string) {
 
 func Ray(values ...interface{}) *Application {
 	r := NewRay()
+
+	r.uuid = uuid.New().String()
 
 	if values != nil {
 		r.Send(values...)
