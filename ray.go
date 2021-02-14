@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/octoper/ray/payloads"
+	"github.com/octoper/go-ray/payloads"
 	"net/http"
 	"os"
 	"strconv"

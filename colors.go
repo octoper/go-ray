@@ -1,6 +1,6 @@
 package ray
 
-import "github.com/octoper/ray/payloads"
+import "github.com/octoper/go-ray/payloads"
 
 // Green Color
 func (r *Application) Green() *Application {
