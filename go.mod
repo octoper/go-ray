@@ -1,4 +1,4 @@
-module github.com/octoper/ray
+module github.com/octoper/go-ray
 
 go 1.15
 
