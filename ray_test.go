@@ -1,4 +1,4 @@
-package go_ray
+package ray
 
 import "testing"
 

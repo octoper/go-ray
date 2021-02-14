@@ -1,9 +1,8 @@
-package go_ray
+package ray
 
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
 	"net/http"
