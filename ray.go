@@ -272,7 +272,7 @@ func (r *Application) SendRequest(ResponsePayloads ...payloads.Payload) *Applica
 
 	requestJson, _ := json.Marshal(requestPayload)
 
-	fmt.Println(string(requestJson))
+	//fmt.Println(string(requestJson))
 
 	responseBody := bytes.NewBuffer(requestJson)
 
