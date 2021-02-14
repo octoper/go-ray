@@ -11,58 +11,58 @@ import (
 	"time"
 )
 
-type Callable func() bool
+type callable func() bool
 
-type Application struct {
+type application struct {
 	uuid string
 	host string
 	port int
 }
 
-type Request struct {
+type request struct {
 	Uuid     string      `json:"uuid"`
 	Payloads interface{} `json:"payloads"`
 	Meta     map[string]string     `json:"meta"`
 }
 
-var ApplicationConfig = Application {
+var applicationConfig = application{
 	host: "127.0.0.1",
 	port: 23517,
 }
 
 // Create New Ray instance
-func NewRay() *Application {
-	ray := ApplicationConfig
+func NewRay() *application {
+	ray := applicationConfig
 	return &ray
 }
 
 // Get the UUID
-func (r *Application) Uuid() string {
+func (r *application) Uuid() string {
 	return r.uuid
 }
 
-// Get the port Application is running
-func (r *Application) Port() int {
+// Get the port application is running
+func (r *application) Port() int {
 	return r.port
 }
 
-// Set the port Application is running
-func (r *Application) SetPort(port int) {
-	ApplicationConfig.port = port
+// Set the port application is running
+func (r *application) SetPort(port int) {
+	applicationConfig.port = port
 }
 
-// Get the host Application is running
-func (r *Application) Host() string {
+// Get the host application is running
+func (r *application) Host() string {
 	return r.host
 }
 
-// Set the host Application is running
-func (r *Application) SetHost(host string) {
-	ApplicationConfig.host = host
+// Set the host application is running
+func (r *application) SetHost(host string) {
+	applicationConfig.host = host
 }
 
 
-func Ray(values ...interface{}) *Application {
+func Ray(values ...interface{}) *application {
 	r := NewRay()
 
 	r.uuid = uuid.New().String()
@@ -75,7 +75,7 @@ func Ray(values ...interface{}) *Application {
 }
 
 // Send Values
-func (r *Application) Send(values ...interface{}) *Application {
+func (r *application) Send(values ...interface{}) *application {
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range values {
@@ -93,121 +93,121 @@ func (r *Application) Send(values ...interface{}) *Application {
 }
 
 // Create New Screen
-func (r *Application) NewScreen(name string) *Application {
+func (r *application) NewScreen(name string) *application {
 	return r.SendRequest(payloads.NewNewScreenPayload(name))
 }
 
 // Color
-func (r *Application) Color(color string) *Application {
+func (r *application) Color(color string) *application {
 	return r.SendRequest(payloads.NewColorPayload(color))
 }
 
 // Send custom payload
-func (r *Application) SendCustom(content interface{}, label string) *Application {
+func (r *application) SendCustom(content interface{}, label string) *application {
 	return r.SendRequest(payloads.NewCustomPayload(content, label))
 }
 
 // Size
-func (r *Application) Size(size string) *Application {
+func (r *application) Size(size string) *application {
 	return r.SendRequest(payloads.NewSizePayload(size))
 }
 
 // Remove
-func (r *Application) Remove() *Application {
+func (r *application) Remove() *application {
 	return r.SendRequest(payloads.NewRemovePayload())
 }
 
 // Hide
-func (r *Application) Hide() *Application {
+func (r *application) Hide() *application {
 	return r.SendRequest(payloads.NewHidePayload())
 }
 
 // Hide App
-func (r *Application) HideApp() *Application {
+func (r *application) HideApp() *application {
 	return r.SendRequest(payloads.NewHideAppPayload())
 }
 
 // Show App
-func (r *Application) ShowApp() *Application {
+func (r *application) ShowApp() *application {
 	return r.SendRequest(payloads.NewShowAppPayload())
 }
 
 // Clear Screen
-func (r *Application) ClearScreen() *Application {
+func (r *application) ClearScreen() *application {
 	return r.SendRequest(payloads.NewClearScreenPayload())
 }
 
 // Clear All
-func (r *Application) ClearAll() *Application {
+func (r *application) ClearAll() *application {
 	return r.SendRequest(payloads.NewClearAllPayload())
 }
 
 // HTML
-func (r *Application) Html(html string) *Application {
+func (r *application) Html(html string) *application {
 	return r.SendRequest(payloads.NewHtmlPayload(html))
 }
 
 // Notify
-func (r *Application) Notify(text string) *Application {
+func (r *application) Notify(text string) *application {
 	return r.SendRequest(payloads.NewNotifyPayload(text))
 }
 
 // Pass
-func (r *Application) Pass(arg interface{}) interface{} {
+func (r *application) Pass(arg interface{}) interface{} {
 	r.Send(arg)
 	return arg
 }
 
 // Boolean
-func (r *Application) Bool(bool bool) *Application {
+func (r *application) Bool(bool bool) *application {
 	return r.SendRequest(payloads.NewBoolPayload(bool))
 }
 
 // Null
-func (r *Application) Null() *Application {
+func (r *application) Null() *application {
 	return r.SendRequest(payloads.NewNullPayload())
 }
 
 // Charles
-func (r *Application) Charles() *Application {
+func (r *application) Charles() *application {
 	return r.Send("🎶 🎹 🎷 🕺")
 }
 
 // String
-func (r *Application) String(str string) *Application {
+func (r *application) String(str string) *application {
 	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
 // Time
-func (r *Application) Time(time time.Time) *Application {
+func (r *application) Time(time time.Time) *application {
 	return r.SendRequest(payloads.NewTimePayload(time, "2021-02-13 18:38:20"))
 }
 
 // Json
-func (r *Application) Json(json interface{}) *Application {
+func (r *application) Json(json interface{}) *application {
 	return r.SendRequest(payloads.NewJsonStringPayload(json))
 }
 
 // Image
-func (r *Application) Image(value string) *Application {
+func (r *application) Image(value string) *application {
 	return r.SendRequest(payloads.NewImagePayload(value))
 }
 
 // Ban
-func (r *Application) Ban() *Application {
+func (r *application) Ban() *application {
 	return r.Send("🕶")
 }
 
 // Die
-func (r *Application) Die() {
+func (r *application) Die() {
 	os.Exit(1)
 }
 
 // Show When
-func (r *Application) ShowWhen(show interface{}) *Application {
+func (r *application) ShowWhen(show interface{}) *application {
 	switch show.(type) {
-	case Callable:
-		show = show.(Callable)
+	case callable:
+		show = show.(callable)
 	}
 
 	if !show.(bool) {
@@ -218,15 +218,15 @@ func (r *Application) ShowWhen(show interface{}) *Application {
 }
 
 // Show If
-func (r *Application) ShowIf(show interface{}) *Application {
+func (r *application) ShowIf(show interface{}) *application {
 	return r.ShowWhen(show)
 }
 
 // Remove When
-func (r *Application) RemoveWhen(show interface{}) *Application {
+func (r *application) RemoveWhen(show interface{}) *application {
 	switch show.(type) {
-	case Callable:
-		show = show.(Callable)
+	case callable:
+		show = show.(callable)
 	}
 
 	if show.(bool) {
@@ -237,12 +237,12 @@ func (r *Application) RemoveWhen(show interface{}) *Application {
 }
 
 // Remove If
-func (r *Application) RemoveIf(show interface{}) *Application {
+func (r *application) RemoveIf(show interface{}) *application {
 	return r.RemoveWhen(show)
 }
 
-// Set the host Application is running
-func (r *Application) SendRequest(ResponsePayloads ...payloads.Payload) *Application {
+// Set the host application is running
+func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
 	//file, line := utils.GetBackTrace(4)
 
 	var payloadsMap []payloads.Payload
@@ -256,7 +256,7 @@ func (r *Application) SendRequest(ResponsePayloads ...payloads.Payload) *Applica
 		payloadsMap = append(payloadsMap, payload)
 	}
 
-	requestPayload := Request{
+	requestPayload := request{
 		Uuid: r.Uuid(),
 		Payloads: payloadsMap,
 		Meta: map[string]string{
