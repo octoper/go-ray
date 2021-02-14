@@ -1,9 +1,8 @@
 package ray
 
-import (
-	"testing"
-)
-
-func Test_Ray(t *testing.T) {
-	Ray().HideApp()
-}
+//func Test_Ray(t *testing.T) {
+//	value := map[string]string {
+//		"hey": "myyy goddd",
+//	}
+//	Ray().Json(value)
+//}
