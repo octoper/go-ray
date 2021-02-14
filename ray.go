@@ -1,4 +1,4 @@
-package ray
+package go_ray
 
 import (
 	"bytes"

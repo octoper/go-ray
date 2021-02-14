@@ -1,4 +1,4 @@
-package ray
+package go_ray
 
 import "github.com/octoper/go-ray/payloads"
 
