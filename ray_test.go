@@ -5,5 +5,5 @@ import (
 )
 
 func Test_Ray(t *testing.T) {
-	Ray()
+	Ray("hey")
 }
