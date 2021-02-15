@@ -3,7 +3,8 @@ package payloads
 import "encoding/json"
 
 func NewJsonStringPayload(value interface{}) Payload {
-	json, err := json.Marshal(value)
+	jsonValue, err := json.Marshal(value)
+
 	if err != nil {
 		panic(err)
 	}
@@ -11,7 +12,7 @@ func NewJsonStringPayload(value interface{}) Payload {
 	return Payload{
 		Type: "json_string",
 		Content: map[string]interface{} {
-			"value": string(json),
+			"value": string(jsonValue),
 		},
 	}
 }

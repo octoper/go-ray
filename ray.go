@@ -3,7 +3,6 @@ package ray
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
 	"net/http"
@@ -191,9 +190,14 @@ func (r *application) Time(time time.Time) *application {
 	return r.SendRequest(payloads.NewTimePayload(time, "2021-02-13 18:38:20"))
 }
 
-// Json
-func (r *application) Json(json interface{}) *application {
-	return r.SendRequest(payloads.NewJsonStringPayload(json))
+/**
+ * Sends the provided value(s) encoded as a JSON string using json.Marshal.
+ */
+func (r *application) ToJson(jsons ...interface{}) *application {
+	for _, jsonValue := range jsons {
+		r.SendRequest(payloads.NewJsonStringPayload(jsonValue))
+	}
+	return r
 }
 
 // Image
@@ -253,7 +257,6 @@ func (r *application) RemoveIf(show interface{}) *application {
 func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
 	//file, line := utils.GetBackTrace(4)
 
-
 	//fmt.Println(file)
 	//fmt.Println(line)
 
@@ -274,13 +277,13 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		Uuid: r.Uuid(),
 		Payloads: payloadsMap,
 		Meta: map[string]string{
-			"ray_package_version": "0.0.1",
+			"ray_package_version": "0.0.3",
 		},
 	}
 
 	requestJson, _ := json.Marshal(requestPayload)
 
-	fmt.Println(string(requestJson))
+	//fmt.Println(string(requestJson))
 
 	responseBody := bytes.NewBuffer(requestJson)
 
