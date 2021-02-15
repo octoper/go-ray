@@ -1,4 +1,4 @@
-# WIP
+# WIP Don't use it yet 😅
 
 ## Debug your Go with Ray to fix problems faster
 
