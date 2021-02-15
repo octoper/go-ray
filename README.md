@@ -2,6 +2,11 @@
 
 ## Debug your Go with Ray to fix problems faster
 
+![Latest Version](https://img.shields.io/github/v/tag/octoper/go-ray)
+![Go version](https://img.shields.io/github/go-mod/go-version/octoper/go-ray)
+![Tests](https://github.com/octoper/go-ray/workflows/Tests/badge.svg)
+![License](https://img.shields.io/github/license/octoper/go-ray)
+
 This module can be installed in any Go application to send messages to the Ray app.
 
 ## Documentation
@@ -26,7 +31,7 @@ Please see [CODE_OF_CONDUCT](.github/CODE_OF_CONDUCT.md) for details.
 
 ## Security Vulnerabilities
 
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
+Please review [our security policy](SECURITY.md) on how to report security vulnerabilities.
 
 ## Credits
 

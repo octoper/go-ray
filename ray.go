@@ -3,6 +3,7 @@ package ray
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
 	"net/http"
@@ -17,6 +18,8 @@ type application struct {
 	uuid string
 	host string
 	port int
+	enabled bool
+	sentPayloads []payloads.Payload
 }
 
 type request struct {
@@ -59,6 +62,11 @@ func (r *application) Host() string {
 // Set the host application is running
 func (r *application) SetHost(host string) {
 	applicationConfig.host = host
+}
+
+// Get Snet Payloads as Json
+func (r *application) SentJsonPayloads() ([]byte, error) {
+	return json.Marshal(applicationConfig.sentPayloads)
 }
 
 
@@ -245,6 +253,10 @@ func (r *application) RemoveIf(show interface{}) *application {
 func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
 	//file, line := utils.GetBackTrace(4)
 
+
+	//fmt.Println(file)
+	//fmt.Println(line)
+
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range ResponsePayloads {
@@ -256,6 +268,8 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		payloadsMap = append(payloadsMap, payload)
 	}
 
+	applicationConfig.sentPayloads = payloadsMap
+
 	requestPayload := request{
 		Uuid: r.Uuid(),
 		Payloads: payloadsMap,
@@ -264,14 +278,9 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		},
 	}
 
-	//
-	//
-	//fmt.Println(file)
-	//fmt.Println(line)
-
 	requestJson, _ := json.Marshal(requestPayload)
 
-	//fmt.Println(string(requestJson))
+	fmt.Println(string(requestJson))
 
 	responseBody := bytes.NewBuffer(requestJson)
 
