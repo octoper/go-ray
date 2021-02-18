@@ -1,14 +1,11 @@
 package ray
 
 import (
-	"bytes"
 	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
-	"net/http"
 	"os"
 	"strconv"
-	"time"
 )
 
 type callable func() bool
@@ -185,10 +182,10 @@ func (r *application) String(str string) *application {
 	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
-// Time
+/*Time
 func (r *application) Time(time time.Time) *application {
 	return r.SendRequest(payloads.NewTimePayload(time, "2021-02-13 18:38:20"))
-}
+}*/
 
 /**
  * Sends the provided value(s) encoded as a JSON string using json.Marshal.
@@ -255,11 +252,6 @@ func (r *application) RemoveIf(show interface{}) *application {
 
 // Set the host application is running
 func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
-	//file, line := utils.GetBackTrace(4)
-
-	//fmt.Println(file)
-	//fmt.Println(line)
-
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range ResponsePayloads {
@@ -281,21 +273,14 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		},
 	}
 
-	requestJson, _ := json.Marshal(requestPayload)
+	client := NewClient("http://"+r.Host()+":"+strconv.Itoa(r.Port()))
 
-	//fmt.Println(string(requestJson))
-
-	responseBody := bytes.NewBuffer(requestJson)
-
-	//Make a request to Ray
-	resp, err := http.Post("http://"+ r.Host() +":"+ strconv.Itoa(r.Port()), "application/json", responseBody)
+	_, err := client.sent(requestPayload)
 
 	//Handle Error
 	if err != nil {
-		panic("Couldn't connect to Ray It doesn't seem to be running at " + r.Host() + ":" + strconv.Itoa(r.Port()))
+		panic("Couldn't connect to Ray It doesn't seem to be running at " + Ray().Host() + ":" + strconv.Itoa(Ray().Port()))
 	}
-
-	defer resp.Body.Close()
 
 	return r
 }

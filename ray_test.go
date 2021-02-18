@@ -7,8 +7,6 @@ import (
 )
 
 func Test_CanSendAStringToRay(t *testing.T) {
-	Ray().Json([]byte(`{"type":"log","content":{"values":[[2,4,6]]}`))
-
 	result, _ := Ray("hey").SentJsonPayloads()
 
 	if len(result) != 1 {
