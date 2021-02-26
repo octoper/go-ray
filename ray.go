@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
 	"os"
+	"runtime"
 	"strconv"
 )
 
@@ -27,6 +28,7 @@ type request struct {
 var applicationConfig = application{
 	host: "127.0.0.1",
 	port: 23517,
+	enabled: true,
 }
 
 // Create New Ray instance
@@ -94,6 +96,16 @@ func (r *application) Send(values ...interface{}) *application {
 	}
 
 	return r.SendRequest(payloadsMap...)
+}
+
+// Enable Ray
+func (r *application) Enable() {
+	applicationConfig.enabled = true
+}
+
+// Disable Ray
+func (r *application) Disable() {
+	applicationConfig.enabled = false
 }
 
 // Create New Screen
@@ -252,12 +264,18 @@ func (r *application) RemoveIf(show interface{}) *application {
 
 // Set the host application is running
 func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
+	if !r.enabled {
+		return r
+	}
+
+	_, file, line, _ := runtime.Caller(2) // first caller is the caller of this function, we want the caller of our caller
+
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range ResponsePayloads {
 		payload.Origin = map[string]string {
-			"file": "",
-			"line_number": "",
+			"file": file,
+			"line_number": strconv.Itoa(line),
 		}
 
 		payloadsMap = append(payloadsMap, payload)
