@@ -5,11 +5,11 @@ import (
 	"github.com/google/uuid"
 	"github.com/octoper/go-ray/payloads"
 	"os"
-	"runtime"
 	"strconv"
+	"time"
 )
 
-type callable func() bool
+type Callable = func() bool
 
 type application struct {
 	uuid string
@@ -128,11 +128,6 @@ func (r *application) Size(size string) *application {
 	return r.SendRequest(payloads.NewSizePayload(size))
 }
 
-// Remove
-func (r *application) Remove() *application {
-	return r.SendRequest(payloads.NewRemovePayload())
-}
-
 // Hide
 func (r *application) Hide() *application {
 	return r.SendRequest(payloads.NewHidePayload())
@@ -194,10 +189,15 @@ func (r *application) String(str string) *application {
 	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
-/*Time
+//Time
 func (r *application) Time(time time.Time) *application {
-	return r.SendRequest(payloads.NewTimePayload(time, "2021-02-13 18:38:20"))
-}*/
+	return r.SendRequest(payloads.NewTimePayload(time, "2006-01-02 15:04:05"))
+}
+
+// Time with Format
+func (r *application) TimeWithFormat(time time.Time, format string) *application {
+	return r.SendRequest(payloads.NewTimePayload(time, format))
+}
 
 /**
  * Sends the provided value(s) encoded as a JSON string using json.Marshal.
@@ -224,11 +224,16 @@ func (r *application) Die() {
 	os.Exit(1)
 }
 
+// Remove
+func (r *application) Remove() *application {
+	return r.SendRequest(payloads.NewRemovePayload())
+}
+
 // Show When
 func (r *application) ShowWhen(show interface{}) *application {
 	switch show.(type) {
-	case callable:
-		show = show.(callable)
+	case Callable:
+		show = show.(Callable)()
 	}
 
 	if !show.(bool) {
@@ -246,8 +251,8 @@ func (r *application) ShowIf(show interface{}) *application {
 // Remove When
 func (r *application) RemoveWhen(show interface{}) *application {
 	switch show.(type) {
-	case callable:
-		show = show.(callable)
+	case Callable:
+		show = show.(Callable)()
 	}
 
 	if show.(bool) {
@@ -268,14 +273,14 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		return r
 	}
 
-	_, file, line, _ := runtime.Caller(2) // first caller is the caller of this function, we want the caller of our caller
+	stack := NewStacktrace()
 
 	var payloadsMap []payloads.Payload
 
 	for _, payload := range ResponsePayloads {
 		payload.Origin = map[string]string {
-			"file": file,
-			"line_number": strconv.Itoa(line),
+			"file": stack.Frames[0].AbsPath,
+			"line_number": strconv.Itoa(stack.Frames[0].Lineno),
 		}
 
 		payloadsMap = append(payloadsMap, payload)
