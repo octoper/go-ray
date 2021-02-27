@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewClearAllPayload() Payload {
 	return Payload{

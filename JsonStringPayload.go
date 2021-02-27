@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 import "encoding/json"
 

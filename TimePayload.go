@@ -1,11 +1,11 @@
-package payloads
+package ray
 
 import "time"
 
 func NewTimePayload(time time.Time, format string) Payload {
 	timezoneName, _ := time.Zone()
 
-	return Payload {
+	return Payload{
 		Type: "carbon",
 		Content: map[string]interface{} {
 			"formatted": time.Format(format),

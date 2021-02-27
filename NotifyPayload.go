@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewNotifyPayload(value string) Payload {
 	return Payload{

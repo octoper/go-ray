@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 type Payload struct {
 	Type string `json:"type"`

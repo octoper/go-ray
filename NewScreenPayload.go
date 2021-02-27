@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewNewScreenPayload(name string) Payload {
 	return Payload{

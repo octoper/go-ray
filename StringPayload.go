@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewStringPayload(value string) Payload {
 	return NewCustomPayload(value, "String")

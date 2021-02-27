@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewRemovePayload() Payload {
 	return Payload{

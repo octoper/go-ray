@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewCustomPayload(content interface{}, label string) Payload {
 	return Payload{

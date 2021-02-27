@@ -1,4 +1,4 @@
-package payloads
+package ray
 
 func NewClearScreenPayload() Payload {
 	return Payload{
