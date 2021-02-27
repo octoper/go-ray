@@ -1,5 +1,3 @@
-# WIP Don't use it yet 😅
-
 ## Debug your Go with Ray to fix problems faster
 
 ![Latest Version](https://img.shields.io/github/v/tag/octoper/go-ray)
@@ -37,8 +35,6 @@ Please review [our security policy](SECURITY.md) on how to report security vulne
 
 - [Vaggelis Yfantis](https://github.com/octoper)
 - [All Contributors](../../contributors)
-
-A big thank you to Chris Oliver for teaching us the basics of Ruby development. You can see the initial development of this package [in this video](https://freek.dev/1904-creating-a-ruby-gem-for-ray).
 
 ## License
 
