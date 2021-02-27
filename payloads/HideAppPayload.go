@@ -1,4 +1,4 @@
-package ray
+package payloads
 
 func NewHideAppPayload() Payload {
 	return Payload{

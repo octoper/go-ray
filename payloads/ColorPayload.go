@@ -1,4 +1,4 @@
-package ray
+package payloads
 
 func NewColorPayload(color string) Payload {
 	return Payload{

@@ -1,4 +1,4 @@
-package ray
+package utils
 
 import (
 	"bytes"
@@ -19,7 +19,7 @@ func NewClient(url string) *client {
 }
 
 
-func (c *client) sent(requestPayload interface{}) (*http.Response, error) {
+func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
 	requestJson, _ := json.Marshal(requestPayload)
 
 	//fmt.Println(string(requestJson))

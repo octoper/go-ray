@@ -1,9 +1,11 @@
 package ray
 
+import "github.com/octoper/go-ray/payloads"
+
 func (r *application) Small() *application {
-	return r.SendRequest(NewSizePayload("sm"))
+	return r.SendRequest(payloads.NewSizePayload("sm"))
 }
 
 func (r *application) Large() *application {
-	return r.SendRequest(NewSizePayload("lg"))
+	return r.SendRequest(payloads.NewSizePayload("lg"))
 }

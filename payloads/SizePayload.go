@@ -1,4 +1,4 @@
-package ray
+package payloads
 
 func NewSizePayload(color string) Payload {
 	return Payload{

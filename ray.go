@@ -3,6 +3,8 @@ package ray
 import (
 	"encoding/json"
 	"github.com/google/uuid"
+	ray "github.com/octoper/go-ray/payloads"
+	"github.com/octoper/go-ray/utils"
 	"os"
 	"strconv"
 	"time"
@@ -15,7 +17,7 @@ type application struct {
 	host string
 	port int
 	enabled bool
-	sentPayloads []Payload
+	sentPayloads []ray.Payload
 }
 
 type request struct {
@@ -81,16 +83,16 @@ func Ray(values ...interface{}) *application {
 
 // Send Values
 func (r *application) Send(values ...interface{}) *application {
-	var payloadsMap []Payload
+	var payloadsMap []ray.Payload
 
 	for _, payload := range values {
 		switch payload.(type) {
 		case bool:
-			payloadsMap = append(payloadsMap, NewBoolPayload(payload.(bool)))
+			payloadsMap = append(payloadsMap, ray.NewBoolPayload(payload.(bool)))
 		case nil:
-			payloadsMap = append(payloadsMap, NewNullPayload())
+			payloadsMap = append(payloadsMap, ray.NewNullPayload())
 		default:
-			payloadsMap = append(payloadsMap, NewLogPayload(payload))
+			payloadsMap = append(payloadsMap, ray.NewLogPayload(payload))
 		}
 	}
 
@@ -109,57 +111,57 @@ func (r *application) Disable() {
 
 // Create New Screen
 func (r *application) NewScreen(name string) *application {
-	return r.SendRequest(NewNewScreenPayload(name))
+	return r.SendRequest(ray.NewNewScreenPayload(name))
 }
 
 // Color
 func (r *application) Color(color string) *application {
-	return r.SendRequest(NewColorPayload(color))
+	return r.SendRequest(ray.NewColorPayload(color))
 }
 
 // Send custom payload
 func (r *application) SendCustom(content interface{}, label string) *application {
-	return r.SendRequest(NewCustomPayload(content, label))
+	return r.SendRequest(ray.NewCustomPayload(content, label))
 }
 
 // Size
 func (r *application) Size(size string) *application {
-	return r.SendRequest(NewSizePayload(size))
+	return r.SendRequest(ray.NewSizePayload(size))
 }
 
 // Hide
 func (r *application) Hide() *application {
-	return r.SendRequest(NewHidePayload())
+	return r.SendRequest(ray.NewHidePayload())
 }
 
 // Hide App
 func (r *application) HideApp() *application {
-	return r.SendRequest(NewHideAppPayload())
+	return r.SendRequest(ray.NewHideAppPayload())
 }
 
 // Show App
 func (r *application) ShowApp() *application {
-	return r.SendRequest(NewShowAppPayload())
+	return r.SendRequest(ray.NewShowAppPayload())
 }
 
 // Clear Screen
 func (r *application) ClearScreen() *application {
-	return r.SendRequest(NewClearScreenPayload())
+	return r.SendRequest(ray.NewClearScreenPayload())
 }
 
 // Clear All
 func (r *application) ClearAll() *application {
-	return r.SendRequest(NewClearAllPayload())
+	return r.SendRequest(ray.NewClearAllPayload())
 }
 
 // HTML
 func (r *application) Html(html string) *application {
-	return r.SendRequest(NewHtmlPayload(html))
+	return r.SendRequest(ray.NewHtmlPayload(html))
 }
 
 // Notify
 func (r *application) Notify(text string) *application {
-	return r.SendRequest(NewNotifyPayload(text))
+	return r.SendRequest(ray.NewNotifyPayload(text))
 }
 
 // Pass
@@ -170,12 +172,12 @@ func (r *application) Pass(arg interface{}) interface{} {
 
 // Boolean
 func (r *application) Bool(bool bool) *application {
-	return r.SendRequest(NewBoolPayload(bool))
+	return r.SendRequest(ray.NewBoolPayload(bool))
 }
 
 // Null
 func (r *application) Null() *application {
-	return r.SendRequest(NewNullPayload())
+	return r.SendRequest(ray.NewNullPayload())
 }
 
 // Charles
@@ -185,17 +187,17 @@ func (r *application) Charles() *application {
 
 // String
 func (r *application) String(str string) *application {
-	return r.SendRequest(NewStringPayload(str))
+	return r.SendRequest(ray.NewStringPayload(str))
 }
 
 //Time
 func (r *application) Time(time time.Time) *application {
-	return r.SendRequest(NewTimePayload(time, "2006-01-02 15:04:05"))
+	return r.SendRequest(ray.NewTimePayload(time, "2006-01-02 15:04:05"))
 }
 
 // Time with Format
 func (r *application) TimeWithFormat(time time.Time, format string) *application {
-	return r.SendRequest(NewTimePayload(time, format))
+	return r.SendRequest(ray.NewTimePayload(time, format))
 }
 
 /**
@@ -203,14 +205,14 @@ func (r *application) TimeWithFormat(time time.Time, format string) *application
  */
 func (r *application) ToJson(jsons ...interface{}) *application {
 	for _, jsonValue := range jsons {
-		r.SendRequest(NewJsonStringPayload(jsonValue))
+		r.SendRequest(ray.NewJsonStringPayload(jsonValue))
 	}
 	return r
 }
 
 // Image
 func (r *application) Image(value string) *application {
-	return r.SendRequest(NewImagePayload(value))
+	return r.SendRequest(ray.NewImagePayload(value))
 }
 
 // Ban
@@ -225,7 +227,7 @@ func (r *application) Die() {
 
 // Remove
 func (r *application) Remove() *application {
-	return r.SendRequest(NewRemovePayload())
+	return r.SendRequest(ray.NewRemovePayload())
 }
 
 // Show When
@@ -267,19 +269,26 @@ func (r *application) RemoveIf(show interface{}) *application {
 }
 
 // Set the host application is running
-func (r *application) SendRequest(ResponsePayloads ...Payload) *application {
+func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application {
 	if !r.enabled {
 		return r
 	}
 
-	stack := NewStacktrace()
+	var payloadsMap []ray.Payload
 
-	var payloadsMap []Payload
+	stack := utils.NewStacktrace()
+	stackAbsPath := ""
+	stackLineNo := ""
+
+	if len(stack.Frames) > 0 {
+		stackAbsPath = stack.Frames[0].AbsPath
+		stackLineNo = strconv.Itoa(stack.Frames[0].Lineno)
+	}
 
 	for _, payload := range ResponsePayloads {
 		payload.Origin = map[string]string {
-			"file": stack.Frames[0].AbsPath,
-			"line_number": strconv.Itoa(stack.Frames[0].Lineno),
+			"file": stackAbsPath,
+			"line_number": stackLineNo,
 		}
 
 		payloadsMap = append(payloadsMap, payload)
@@ -295,9 +304,9 @@ func (r *application) SendRequest(ResponsePayloads ...Payload) *application {
 		},
 	}
 
-	client := NewClient("http://"+r.Host()+":"+strconv.Itoa(r.Port()))
+	client := utils.NewClient("http://"+r.Host()+":"+strconv.Itoa(r.Port()))
 
-	_, err := client.sent(requestPayload)
+	_, err := client.Sent(requestPayload)
 
 	//Handle Error
 	if err != nil {

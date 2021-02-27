@@ -1,4 +1,4 @@
-package ray
+package utils
 
 /**
  * Thanks to Sentry Team and Sentry Go SDK
@@ -273,9 +273,8 @@ func filterFrames(frames []Frame) []Frame {
 		if frame.Module == "runtime" || frame.Module == "testing" {
 			continue
 		}
-		// Skip Sentry internal frames, except for frames in _test packages (for
-		// testing).
-		if strings.HasPrefix(frame.Module, "github.com/getsentry/sentry-go") &&
+		// Skip Sentry internal frames, except for frames in _test packages (for testing).
+		if strings.HasPrefix(frame.Module, "github.com/octoper/go-ray") &&
 			!strings.HasSuffix(frame.Module, "_test") {
 			continue
 		}

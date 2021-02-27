@@ -1,4 +1,4 @@
-package ray
+package payloads
 
 func NewShowAppPayload() Payload {
 	return Payload{
