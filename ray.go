@@ -34,8 +34,8 @@ var applicationConfig = application{
 
 // Create New Ray instance
 func NewRay() *application {
-	ray := applicationConfig
-	return &ray
+	app := applicationConfig
+	return &app
 }
 
 // Get the UUID
@@ -63,7 +63,7 @@ func (r *application) SetHost(host string) {
 	applicationConfig.host = host
 }
 
-// Get Snet Payloads as Json
+// Get Sent Payloads as Json
 func (r *application) SentJsonPayloads() ([]byte, error) {
 	return json.Marshal(applicationConfig.sentPayloads)
 }
@@ -107,6 +107,16 @@ func (r *application) Enable() {
 // Disable Ray
 func (r *application) Disable() {
 	applicationConfig.enabled = false
+}
+
+// Check if Ray is enabled
+func (r *application) Enabled() bool {
+	return applicationConfig.enabled
+}
+
+// Check if Ray is disabled
+func (r *application) Disabled() bool {
+	return !applicationConfig.enabled
 }
 
 // Create New Screen
@@ -222,7 +232,12 @@ func (r *application) Ban() *application {
 
 // Die
 func (r *application) Die() {
-	os.Exit(1)
+	r.DieStatusCode(1)
+}
+
+// Die with Status Code
+func (r *application) DieStatusCode(status int) {
+	os.Exit(status)
 }
 
 // Remove
