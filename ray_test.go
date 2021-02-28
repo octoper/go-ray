@@ -6,8 +6,11 @@ import (
 	"testing"
 )
 
-func Test_CanSendAStringToRay(t *testing.T) {
+func TestMain(m *testing.M) {
 	Ray().Disable()
+}
+
+func Test_CanSendAStringToRay(t *testing.T) {
 	ray := Ray("hey")
 
 	result, _ := ray.SentJsonPayloads()

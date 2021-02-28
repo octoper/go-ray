@@ -99,12 +99,12 @@ func (r *application) Send(values ...interface{}) *application {
 	return r.SendRequest(payloadsMap...)
 }
 
-// Enable Ray
+// Enable sending payloads to Ray
 func (r *application) Enable() {
 	applicationConfig.enabled = true
 }
 
-// Disable Ray
+// Prevents sending payloads to Ray
 func (r *application) Disable() {
 	applicationConfig.enabled = false
 }
