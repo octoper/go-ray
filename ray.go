@@ -13,22 +13,22 @@ import (
 type Callable = func() bool
 
 type application struct {
-	uuid string
-	host string
-	port int
-	enabled bool
+	uuid         string
+	host         string
+	port         int
+	enabled      bool
 	sentPayloads []ray.Payload
 }
 
 type request struct {
-	Uuid     string      `json:"uuid"`
-	Payloads interface{} `json:"payloads"`
-	Meta     map[string]string     `json:"meta"`
+	Uuid     string            `json:"uuid"`
+	Payloads interface{}       `json:"payloads"`
+	Meta     map[string]string `json:"meta"`
 }
 
 var applicationConfig = application{
-	host: "127.0.0.1",
-	port: 23517,
+	host:    "127.0.0.1",
+	port:    23517,
 	enabled: true,
 }
 
@@ -47,27 +47,6 @@ func (r *application) Uuid() string {
 func (r *application) Port() int {
 	return r.port
 }
-
-// Set the port application is running
-func (r *application) SetPort(port int) {
-	applicationConfig.port = port
-}
-
-// Get the host application is running
-func (r *application) Host() string {
-	return r.host
-}
-
-// Set the host application is running
-func (r *application) SetHost(host string) {
-	applicationConfig.host = host
-}
-
-// Get Sent Payloads as Json
-func (r *application) SentJsonPayloads() ([]byte, error) {
-	return json.Marshal(applicationConfig.sentPayloads)
-}
-
 
 func Ray(values ...interface{}) *application {
 	r := NewRay()
@@ -97,6 +76,26 @@ func (r *application) Send(values ...interface{}) *application {
 	}
 
 	return r.SendRequest(payloadsMap...)
+}
+
+// Set the port application is running
+func (r *application) SetPort(port int) {
+	applicationConfig.port = port
+}
+
+// Get the host application is running
+func (r *application) Host() string {
+	return r.host
+}
+
+// Set the host application is running
+func (r *application) SetHost(host string) {
+	applicationConfig.host = host
+}
+
+// Get Sent Payloads as Json
+func (r *application) SentJsonPayloads() ([]byte, error) {
+	return json.Marshal(applicationConfig.sentPayloads)
 }
 
 // Enable sending payloads to Ray
@@ -297,8 +296,8 @@ func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application 
 	}
 
 	for _, payload := range ResponsePayloads {
-		payload.Origin = map[string]string {
-			"file": stackAbsPath,
+		payload.Origin = map[string]string{
+			"file":        stackAbsPath,
 			"line_number": stackLineNo,
 		}
 
@@ -308,7 +307,7 @@ func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application 
 	applicationConfig.sentPayloads = payloadsMap
 
 	requestPayload := request{
-		Uuid: r.Uuid(),
+		Uuid:     r.Uuid(),
 		Payloads: payloadsMap,
 		Meta: map[string]string{
 			"ray_package_version": "0.0.3",
@@ -319,7 +318,7 @@ func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application 
 		return r
 	}
 
-	client := utils.NewClient("http://"+r.Host()+":"+strconv.Itoa(r.Port()))
+	client := utils.NewClient("http://" + r.Host() + ":" + strconv.Itoa(r.Port()))
 
 	_, err := client.Sent(requestPayload)
 
