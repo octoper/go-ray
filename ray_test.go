@@ -74,14 +74,3 @@ func TestApplication_Color(t *testing.T) {
 
 	cupaloy.SnapshotT(t, result)
 }
-
-func TestApplication_Red(t *testing.T) {
-	t.Parallel()
-
-	ray := Ray().Red()
-
-	result, _ := ray.SentJsonPayloads()
-
-	cupaloy.SnapshotT(t, result)
-}
-
