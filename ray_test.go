@@ -8,11 +8,13 @@ import (
 
 func TestMain(m *testing.M) {
 	Ray().Disable()
-	exitVal := m.Run()
-	os.Exit(exitVal)
+
+	os.Exit(m.Run())
 }
 
 func Test_CanSendAStringToRay(t *testing.T) {
+	t.Parallel()
+
 	ray := Ray("hey")
 
 	result, _ := ray.SentJsonPayloads()
@@ -25,6 +27,8 @@ func Test_CanSendAStringToRay(t *testing.T) {
 }
 
 func Test_CanSendAnArrayToRay(t *testing.T) {
+	t.Parallel()
+
 	ray := Ray([]int{2,4,6}).Color("green")
 
 	result, _ := ray.SentJsonPayloads()
