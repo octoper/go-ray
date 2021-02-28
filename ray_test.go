@@ -8,6 +8,8 @@ import (
 
 func TestMain(m *testing.M) {
 	Ray().Disable()
+	exitVal := m.Run()
+	os.Exit(exitVal)
 }
 
 func Test_CanSendAStringToRay(t *testing.T) {
@@ -39,13 +41,3 @@ func skipCI(t *testing.T) {
 		t.Skip("Test does not run on GitHub actions")
 	}
 }
-
-//func testSnapshotsRayPayloads(ray *application, t *testing.T)  {
-//	result, _ := ray.SentJsonPayloads()
-//
-//	err := cupaloy.Snapshot(result)
-//
-//	if err != nil {
-//		t.Fatal("Tests in different packages are independent of each other", err)
-//	}
-//}
