@@ -3,6 +3,7 @@
 ![Latest Version](https://img.shields.io/github/v/tag/octoper/go-ray)
 ![Go version](https://img.shields.io/github/go-mod/go-version/octoper/go-ray)
 ![Tests](https://github.com/octoper/go-ray/workflows/Tests/badge.svg)
+[![Golang CI Lint](https://github.com/octoper/go-ray/actions/workflows/linter.yml/badge.svg)](https://github.com/octoper/go-ray/actions/workflows/linter.yml)
 ![License](https://img.shields.io/github/license/octoper/go-ray)
 
 This module can be installed in any Go application to send messages to the Ray app.
