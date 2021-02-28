@@ -29,6 +29,10 @@ func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
 	//Make a request to Ray
 	resp, err := http.Post(c.url, "application/json", responseBody)
 
+	if err != nil {
+		panic(err)
+	}
+
 	defer resp.Body.Close()
 
 	return resp, err

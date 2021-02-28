@@ -86,7 +86,7 @@ func (r *application) Send(values ...interface{}) *application {
 	var payloadsMap []ray.Payload
 
 	for _, payload := range values {
-		switch payload.(type) {
+		switch payload.(type) { // nolint:gosimple
 		case bool:
 			payloadsMap = append(payloadsMap, ray.NewBoolPayload(payload.(bool)))
 		case nil:
@@ -247,7 +247,7 @@ func (r *application) Remove() *application {
 
 // Show When
 func (r *application) ShowWhen(show interface{}) *application {
-	switch show.(type) {
+	switch show.(type) { // nolint:gosimple
 	case Callable:
 		show = show.(Callable)()
 	}
@@ -266,7 +266,7 @@ func (r *application) ShowIf(show interface{}) *application {
 
 // Remove When
 func (r *application) RemoveWhen(show interface{}) *application {
-	switch show.(type) {
+	switch show.(type) { // nolint:gosimple
 	case Callable:
 		show = show.(Callable)()
 	}

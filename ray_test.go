@@ -39,9 +39,3 @@ func Test_CanSendAnArrayToRay(t *testing.T) {
 		t.Fatal("Tests in different packages are independent of each other", err)
 	}
 }
-
-func skipCI(t *testing.T) {
-	if os.Getenv("CI") != "" {
-		t.Skip("Test does not run on GitHub actions")
-	}
-}
