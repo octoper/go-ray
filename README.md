@@ -12,6 +12,12 @@ This module can be installed in any Go application to send messages to the Ray a
 
 You can find the full documentation on [our documentation site](https://spatie.be/docs/ray).
 
+## Testing
+
+```bash
+go test -v
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
