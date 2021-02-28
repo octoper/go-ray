@@ -285,10 +285,6 @@ func (r *application) RemoveIf(show interface{}) *application {
 
 // Set the host application is running
 func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application {
-	if !r.enabled {
-		return r
-	}
-
 	var payloadsMap []ray.Payload
 
 	stack := utils.NewStacktrace()
@@ -317,6 +313,10 @@ func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application 
 		Meta: map[string]string{
 			"ray_package_version": "0.0.3",
 		},
+	}
+
+	if !r.enabled {
+		return r
 	}
 
 	client := utils.NewClient("http://"+r.Host()+":"+strconv.Itoa(r.Port()))

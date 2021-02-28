@@ -7,6 +7,7 @@ import (
 )
 
 func Test_CanSendAStringToRay(t *testing.T) {
+	Ray().Disable()
 	ray := Ray("hey")
 
 	result, _ := ray.SentJsonPayloads()
