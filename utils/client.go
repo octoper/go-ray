@@ -3,6 +3,7 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -22,7 +23,7 @@ func NewClient(url string) *client {
 func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
 	requestJson, _ := json.Marshal(requestPayload)
 
-	//fmt.Println(string(requestJson))
+	fmt.Println(string(requestJson))
 
 	responseBody := bytes.NewBuffer(requestJson)
 

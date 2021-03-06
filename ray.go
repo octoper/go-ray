@@ -70,8 +70,10 @@ func (r *application) Send(values ...interface{}) *application {
 			payloadsMap = append(payloadsMap, ray.NewBoolPayload(payload.(bool)))
 		case nil:
 			payloadsMap = append(payloadsMap, ray.NewNullPayload())
+		case string, int, int32, int64, float32, float64, complex64, complex128, uint, uint8, uint16, uint32, uint64:
+			payloadsMap = append(payloadsMap, ray.NewCustomPayload(payload, ""))
 		default:
-			payloadsMap = append(payloadsMap, ray.NewLogPayload(payload))
+			payloadsMap = append(payloadsMap, ray.NewDumpPayload(payload))
 		}
 	}
 
@@ -231,11 +233,11 @@ func (r *application) Ban() *application {
 
 // Die
 func (r *application) Die() {
-	r.DieStatusCode(1)
+	r.DieWithStatusCode(1)
 }
 
 // Die with Status Code
-func (r *application) DieStatusCode(status int) {
+func (r *application) DieWithStatusCode(status int) {
 	os.Exit(status)
 }
 
