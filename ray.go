@@ -1,6 +1,8 @@
 package ray
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"github.com/google/uuid"
 	ray "github.com/octoper/go-ray/payloads"
@@ -18,6 +20,7 @@ type application struct {
 	port         int
 	enabled      bool
 	sentPayloads []ray.Payload
+	client utils.Client
 }
 
 type request struct {
@@ -30,22 +33,13 @@ var applicationConfig = application{
 	host:    "127.0.0.1",
 	port:    23517,
 	enabled: true,
+	client: *utils.NewClient(),
 }
 
 // Create New Ray instance
 func NewRay() *application {
 	app := applicationConfig
 	return &app
-}
-
-// Get the UUID
-func (r *application) Uuid() string {
-	return r.uuid
-}
-
-// Get the port application is running
-func (r *application) Port() int {
-	return r.port
 }
 
 func Ray(values ...interface{}) *application {
@@ -78,6 +72,23 @@ func (r *application) Send(values ...interface{}) *application {
 	}
 
 	return r.SendRequest(payloadsMap...)
+}
+
+// Get the UUID
+func (r *application) Uuid() string {
+	return r.uuid
+}
+
+// Get the UUID
+func (r *application) Client() *utils.Client {
+	r.client.SetHost(r.Host())
+	r.client.SetPort(r.Port())
+	return &r.client
+}
+
+// Get the port application is running
+func (r *application) Port() int {
+	return r.port
 }
 
 // Set the port application is running
@@ -211,6 +222,25 @@ func (r *application) TimeWithFormat(time time.Time, format string) *application
 	return r.SendRequest(ray.NewTimePayload(time, format))
 }
 
+// Pause code execution
+func (r *application) Pause() *application {
+	hash := md5.New()
+	hash.Write([]byte(time.Now().String()))
+	lockName := hash.Sum(nil)
+
+	r.SendRequest(ray.NewCreateLockPayload(hex.EncodeToString(lockName)))
+
+	for {
+		time.Sleep(1);
+
+		lockExistsClient := r.Client().LockExists(hex.EncodeToString(lockName))
+		if !lockExistsClient.Active {
+			break
+		}
+	}
+
+	return r
+}
 /**
  * Sends the provided value(s) encoded as a JSON string using json.Marshal.
  */
@@ -320,7 +350,7 @@ func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application 
 		return r
 	}
 
-	client := utils.NewClient("http://" + r.Host() + ":" + strconv.Itoa(r.Port()))
+	client := r.Client()
 
 	_, err := client.Sent(requestPayload)
 

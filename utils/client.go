@@ -4,23 +4,42 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
+	"strconv"
 )
 
-type client struct {
-	url string
+type Client struct {
+	host string
+	port int
 }
+
+type lockRespnse struct {
+	Name          string `json:"name"`
+	Active        bool   `json:"active"`
+	StopExecution bool   `json:"stop_execution"`
+	GroupUuid     string `json:"displayed_on_group_uuid"`
+}
+
 
 // Create Client instance
-func NewClient(url string) *client {
-	newClient := client{
-		url: url,
-	}
-	return &newClient
+func NewClient() *Client {
+	return &Client{}
+}
+
+func (c *Client) SetPort(port int) int {
+	c.port = port
+	return c.port
+}
+
+func (c *Client) SetHost(host string) string {
+	c.host = host
+	return c.host
 }
 
 
-func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
+func (c *Client) Sent(requestPayload interface{}) (*http.Response, error) {
 	requestJson, _ := json.Marshal(requestPayload)
 
 	fmt.Println(string(requestJson))
@@ -28,7 +47,7 @@ func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
 	responseBody := bytes.NewBuffer(requestJson)
 
 	//Make a request to Ray
-	resp, err := http.Post(c.url, "application/json", responseBody)
+	resp, err := http.Post("http://" + c.host + ":" + strconv.Itoa(c.port), "application/json", responseBody)
 
 	if err != nil {
 		panic(err)
@@ -37,4 +56,26 @@ func (c *client) Sent(requestPayload interface{}) (*http.Response, error) {
 	defer resp.Body.Close()
 
 	return resp, err
+}
+
+func (c *Client) LockExists(lockName string) lockRespnse {
+	//Make a request to Ray
+	resp, err := http.Get("http://" + c.host + ":" + strconv.Itoa(c.port) + "/locks/"+ lockName)
+
+	if err != nil {
+		panic(err)
+	}
+
+	body, err := io.ReadAll(resp.Body)
+
+	res := lockRespnse{}
+	if err := json.Unmarshal([]byte(body), &res); err != nil {
+		panic(err)
+	}
+
+	if (res.StopExecution) {
+		os.Exit(1)
+	}
+
+	return res
 }
