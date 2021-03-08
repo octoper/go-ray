@@ -5,7 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"github.com/google/uuid"
-	ray "github.com/octoper/go-ray/payloads"
+	payloads "github.com/octoper/go-ray/payloads"
 	"github.com/octoper/go-ray/utils"
 	"os"
 	"strconv"
@@ -19,7 +19,7 @@ type application struct {
 	host         string
 	port         int
 	enabled      bool
-	sentPayloads []ray.Payload
+	sentPayloads []payloads.Payload
 	client utils.Client
 }
 
@@ -56,18 +56,18 @@ func Ray(values ...interface{}) *application {
 
 // Send Values
 func (r *application) Send(values ...interface{}) *application {
-	var payloadsMap []ray.Payload
+	var payloadsMap []payloads.Payload
 
 	for _, payload := range values {
 		switch payload.(type) { // nolint:gosimple
 		case bool:
-			payloadsMap = append(payloadsMap, ray.NewBoolPayload(payload.(bool)))
+			payloadsMap = append(payloadsMap, payloads.NewBoolPayload(payload.(bool)))
 		case nil:
-			payloadsMap = append(payloadsMap, ray.NewNullPayload())
+			payloadsMap = append(payloadsMap, payloads.NewNullPayload())
 		case string, int, int32, int64, float32, float64, complex64, complex128, uint, uint8, uint16, uint32, uint64:
-			payloadsMap = append(payloadsMap, ray.NewCustomPayload(payload, ""))
+			payloadsMap = append(payloadsMap, payloads.NewCustomPayload(payload, ""))
 		default:
-			payloadsMap = append(payloadsMap, ray.NewDumpPayload(payload))
+			payloadsMap = append(payloadsMap, payloads.NewDumpPayload(payload))
 		}
 	}
 
@@ -133,57 +133,57 @@ func (r *application) Disabled() bool {
 
 // Create New Screen
 func (r *application) NewScreen(name string) *application {
-	return r.SendRequest(ray.NewNewScreenPayload(name))
+	return r.SendRequest(payloads.NewNewScreenPayload(name))
 }
 
 // Color
 func (r *application) Color(color string) *application {
-	return r.SendRequest(ray.NewColorPayload(color))
+	return r.SendRequest(payloads.NewColorPayload(color))
 }
 
 // Send custom payload
 func (r *application) SendCustom(content interface{}, label string) *application {
-	return r.SendRequest(ray.NewCustomPayload(content, label))
+	return r.SendRequest(payloads.NewCustomPayload(content, label))
 }
 
 // Size
 func (r *application) Size(size string) *application {
-	return r.SendRequest(ray.NewSizePayload(size))
+	return r.SendRequest(payloads.NewSizePayload(size))
 }
 
 // Hide
 func (r *application) Hide() *application {
-	return r.SendRequest(ray.NewHidePayload())
+	return r.SendRequest(payloads.NewHidePayload())
 }
 
 // Hide App
 func (r *application) HideApp() *application {
-	return r.SendRequest(ray.NewHideAppPayload())
+	return r.SendRequest(payloads.NewHideAppPayload())
 }
 
 // Show App
 func (r *application) ShowApp() *application {
-	return r.SendRequest(ray.NewShowAppPayload())
+	return r.SendRequest(payloads.NewShowAppPayload())
 }
 
 // Clear Screen
 func (r *application) ClearScreen() *application {
-	return r.SendRequest(ray.NewClearScreenPayload())
+	return r.SendRequest(payloads.NewClearScreenPayload())
 }
 
 // Clear All
 func (r *application) ClearAll() *application {
-	return r.SendRequest(ray.NewClearAllPayload())
+	return r.SendRequest(payloads.NewClearAllPayload())
 }
 
 // HTML
 func (r *application) Html(html string) *application {
-	return r.SendRequest(ray.NewHtmlPayload(html))
+	return r.SendRequest(payloads.NewHtmlPayload(html))
 }
 
 // Notify
 func (r *application) Notify(text string) *application {
-	return r.SendRequest(ray.NewNotifyPayload(text))
+	return r.SendRequest(payloads.NewNotifyPayload(text))
 }
 
 // Pass
@@ -194,12 +194,12 @@ func (r *application) Pass(arg interface{}) interface{} {
 
 // Boolean
 func (r *application) Bool(bool bool) *application {
-	return r.SendRequest(ray.NewBoolPayload(bool))
+	return r.SendRequest(payloads.NewBoolPayload(bool))
 }
 
 // Null
 func (r *application) Null() *application {
-	return r.SendRequest(ray.NewNullPayload())
+	return r.SendRequest(payloads.NewNullPayload())
 }
 
 // Charles
@@ -209,17 +209,17 @@ func (r *application) Charles() *application {
 
 // String
 func (r *application) String(str string) *application {
-	return r.SendRequest(ray.NewStringPayload(str))
+	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
 //Time
 func (r *application) Time(time time.Time) *application {
-	return r.SendRequest(ray.NewTimePayload(time, "2006-01-02 15:04:05"))
+	return r.SendRequest(payloads.NewTimePayload(time, "2006-01-02 15:04:05"))
 }
 
 // Time with Format
 func (r *application) TimeWithFormat(time time.Time, format string) *application {
-	return r.SendRequest(ray.NewTimePayload(time, format))
+	return r.SendRequest(payloads.NewTimePayload(time, format))
 }
 
 // Pause code execution
@@ -228,7 +228,7 @@ func (r *application) Pause() *application {
 	hash.Write([]byte(time.Now().String()))
 	lockName := hash.Sum(nil)
 
-	r.SendRequest(ray.NewCreateLockPayload(hex.EncodeToString(lockName)))
+	r.SendRequest(payloads.NewCreateLockPayload(hex.EncodeToString(lockName)))
 
 	for {
 		time.Sleep(1);
@@ -246,14 +246,14 @@ func (r *application) Pause() *application {
  */
 func (r *application) ToJson(jsons ...interface{}) *application {
 	for _, jsonValue := range jsons {
-		r.SendRequest(ray.NewJsonStringPayload(jsonValue))
+		r.SendRequest(payloads.NewJsonStringPayload(jsonValue))
 	}
 	return r
 }
 
 // Image
 func (r *application) Image(value string) *application {
-	return r.SendRequest(ray.NewImagePayload(value))
+	return r.SendRequest(payloads.NewImagePayload(value))
 }
 
 // Ban
@@ -273,7 +273,7 @@ func (r *application) DieWithStatusCode(status int) {
 
 // Remove
 func (r *application) Remove() *application {
-	return r.SendRequest(ray.NewRemovePayload())
+	return r.SendRequest(payloads.NewRemovePayload())
 }
 
 // Show When
@@ -315,8 +315,8 @@ func (r *application) RemoveIf(show interface{}) *application {
 }
 
 // Set the host application is running
-func (r *application) SendRequest(ResponsePayloads ...ray.Payload) *application {
-	var payloadsMap []ray.Payload
+func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
+	var payloadsMap []payloads.Payload
 
 	stack := utils.NewStacktrace()
 	stackAbsPath := ""
