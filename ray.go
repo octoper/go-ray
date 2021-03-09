@@ -225,13 +225,18 @@ func (r *application) TimeWithFormat(time time.Time, format string) *application
 // Pause code execution
 func (r *application) Pause() *application {
 	hash := md5.New()
-	hash.Write([]byte(time.Now().String()))
+	_, err := hash.Write([]byte(time.Now().String()))
+
+	if err != nil {
+		panic(err)
+	}
+
 	lockName := hash.Sum(nil)
 
 	r.SendRequest(payloads.NewCreateLockPayload(hex.EncodeToString(lockName)))
 
 	for {
-		time.Sleep(1);
+		time.Sleep(5); //nolint:staticcheck
 
 		lockExistsClient := r.Client().LockExists(hex.EncodeToString(lockName))
 		if !lockExistsClient.Active {
@@ -241,9 +246,8 @@ func (r *application) Pause() *application {
 
 	return r
 }
-/**
- * Sends the provided value(s) encoded as a JSON string using json.Marshal.
- */
+
+// Sends the provided value(s) encoded as a JSON string using json.Marshal.
 func (r *application) ToJson(jsons ...interface{}) *application {
 	for _, jsonValue := range jsons {
 		r.SendRequest(payloads.NewJsonStringPayload(jsonValue))
