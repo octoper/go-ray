@@ -1,6 +1,6 @@
 package payloads
 
-// Create a new Notify Payload
+// NewNotifyPayload creates a new Notify Payload
 func NewNotifyPayload(value string) Payload {
 	return Payload{
 		Type: "notify",

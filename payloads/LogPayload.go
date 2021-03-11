@@ -1,6 +1,6 @@
 package payloads
 
-// Create a new Log Payload
+// NewLogPayload creates a new Log Payload
 func NewLogPayload(values ...interface{}) Payload {
 	return Payload {
 		Type: "log",

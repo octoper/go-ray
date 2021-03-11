@@ -2,7 +2,7 @@ package payloads
 
 import "encoding/json"
 
-// Create a new Json String Payload
+// NewJsonStringPayload creates a new Json String Payload
 func NewJsonStringPayload(value interface{}) Payload {
 	jsonValue, err := json.Marshal(value)
 
