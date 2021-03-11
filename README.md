@@ -5,6 +5,7 @@
 ![Tests](https://github.com/octoper/go-ray/workflows/Tests/badge.svg)
 [![Golang CI Lint](https://github.com/octoper/go-ray/actions/workflows/linter.yml/badge.svg)](https://github.com/octoper/go-ray/actions/workflows/linter.yml)
 ![License](https://img.shields.io/github/license/octoper/go-ray)
+[![Go Reference](https://pkg.go.dev/badge/github.com/octoper/go-ray.svg)](https://pkg.go.dev/github.com/octoper/go-ray)
 
 This module can be installed in any Go application to send messages to the Ray app.
 
