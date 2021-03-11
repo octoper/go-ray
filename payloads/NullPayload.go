@@ -1,6 +1,6 @@
 package payloads
 
-// NewNotifyPayload creates a new Null Payload
+// NewNullPayload creates a new Null Payload
 func NewNullPayload() Payload {
 	return NewCustomPayload(nil, "Null")
 }

@@ -12,6 +12,7 @@ import (
 	"time"
 )
 
+// Callable mocks a function that returns a boolean
 type Callable = func() bool
 
 type application struct {
@@ -36,13 +37,13 @@ var applicationConfig = application{
 	client: *utils.NewClient(),
 }
 
-// Create New Ray instance
+// NewRay creates a New Ray instance
 func NewRay() *application {
 	app := applicationConfig
 	return &app
 }
 
-// Creates a new insatnce of the application also can receive values to send to Ray
+// Ray Creates a new insatnce of the application also can receive values to send to Ray
 func Ray(values ...interface{}) *application {
 	r := NewRay()
 
