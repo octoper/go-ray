@@ -42,6 +42,7 @@ func NewRay() *application {
 	return &app
 }
 
+// Creates a new insatnce of the application also can receive values to send to Ray
 func Ray(values ...interface{}) *application {
 	r := NewRay()
 
