@@ -1,3 +1,4 @@
+//nolint
 package main
 
 import (
@@ -9,7 +10,7 @@ func main() {
 	ray.Ray().ClearAll()
 	myRay := ray.Ray(4)
 	for i := 0; i < 10; i++ {
-		time.Sleep(8 * time.Second) 
+		time.Sleep(time.Second)
 		myRay.Send(2)
-	}	
+	}
 }
