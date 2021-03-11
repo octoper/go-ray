@@ -6,7 +6,7 @@ import (
 )
 
 func TestApplication_Red(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Red()
 
@@ -17,7 +17,7 @@ func TestApplication_Red(t *testing.T) {
 
 
 func TestApplication_Green(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Green()
 
@@ -27,7 +27,7 @@ func TestApplication_Green(t *testing.T) {
 }
 
 func TestApplication_Blue(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Blue()
 
@@ -37,7 +37,7 @@ func TestApplication_Blue(t *testing.T) {
 }
 
 func TestApplication_Purple(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Purple()
 
@@ -47,7 +47,7 @@ func TestApplication_Purple(t *testing.T) {
 }
 
 func TestApplication_Orange(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Orange()
 
@@ -57,7 +57,7 @@ func TestApplication_Orange(t *testing.T) {
 }
 
 func TestApplication_Gray(t *testing.T) {
-	t.Parallel()
+	// t.Parallel()
 
 	ray := Ray().Gray()
 
