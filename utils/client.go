@@ -29,20 +29,20 @@ func NewClient() *Client {
 	return &Client{}
 }
 
-// Sets the port
+// SetPort Sets the port
 func (c *Client) SetPort(port int) int {
 	c.port = port
 	return c.port
 }
 
-// Sets the host
+// SetHost Sets the host
 func (c *Client) SetHost(host string) string {
 	c.host = host
 	return c.host
 }
 
 
-// Sents the give payload to Ray
+// Sent sents the give payload to Ray
 func (c *Client) Sent(requestPayload interface{}) (*http.Response, error) {
 	requestJson, _ := json.Marshal(requestPayload)
 
@@ -60,7 +60,7 @@ func (c *Client) Sent(requestPayload interface{}) (*http.Response, error) {
 	return resp, err
 }
 
-// Checks if lock exists
+// LockExists checks if lock exists
 func (c *Client) LockExists(lockName string) LockRespnse {
 	//Make a request to Ray
 	resp, err := http.Get("http://" + c.host + ":" + strconv.Itoa(c.port) + "/locks/"+ lockName)
