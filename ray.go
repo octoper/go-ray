@@ -236,7 +236,7 @@ func (r *application) Pause() *application {
 	r.SendRequest(payloads.NewCreateLockPayload(hex.EncodeToString(lockName)))
 
 	for {
-		time.Sleep(5); //nolint
+		time.Sleep(8 * time.Second);
 
 		lockExistsClient := r.Client().LockExists(hex.EncodeToString(lockName))
 		if !lockExistsClient.Active {
