@@ -1,5 +1,6 @@
 package payloads
 
+// Create a new Size Payload
 func NewSizePayload(color string) Payload {
 	return Payload{
 		Type: "size",

@@ -1,5 +1,6 @@
 package payloads
 
+// Create a new Create Lock Payload
 func NewCreateLockPayload(name string) Payload {
 	return Payload{
 		Type: "create_lock",

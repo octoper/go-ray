@@ -2,6 +2,7 @@ package payloads
 
 import "time"
 
+// Create a new Time Payload
 func NewTimePayload(time time.Time, format string) Payload {
 	timezoneName, _ := time.Zone()
 

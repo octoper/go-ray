@@ -5,6 +5,7 @@ import (
 	"github.com/gomarkdown/markdown"
 )
 
+// Create a new Dump Payload
 func NewDumpPayload(value interface{}) Payload {
 	style := `
 	<style>

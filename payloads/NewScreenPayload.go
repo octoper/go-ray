@@ -1,5 +1,6 @@
 package payloads
 
+// Create a new New Screen Payload
 func NewNewScreenPayload(name string) Payload {
 	return Payload{
 		Type: "new_screen",
