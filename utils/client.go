@@ -9,11 +9,13 @@ import (
 	"strconv"
 )
 
+// Client struct
 type Client struct {
 	host string
 	port int
 }
 
+// LockRespnse struct
 type LockRespnse struct {
 	Name          string `json:"name"`
 	Active        bool   `json:"active"`
@@ -22,7 +24,7 @@ type LockRespnse struct {
 }
 
 
-// Create Client instance
+// NewClient creates a Client instance
 func NewClient() *Client {
 	return &Client{}
 }
