@@ -365,3 +365,4 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 
 	return r
 }
+

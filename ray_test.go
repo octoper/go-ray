@@ -28,3 +28,4 @@ func TestApplication_SetPort(t *testing.T) {
 
 	assert.Equal(t, 27154, Ray().Port())
 }
+
