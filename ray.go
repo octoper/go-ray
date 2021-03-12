@@ -324,14 +324,14 @@ func (r *application) RemoveIf(show interface{}) *application {
 func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *application {
 	var payloadsMap []payloads.Payload
 
-	stack := utils.NewStacktrace()
+	// stack := utils.NewStacktrace()
 	stackAbsPath := ""
 	stackLineNo := ""
 
-	if len(stack.Frames) > 0 {
+	/*if len(stack.Frames) > 0 {
 		stackAbsPath = stack.Frames[0].AbsPath
 		stackLineNo = strconv.Itoa(stack.Frames[0].Lineno)
-	}
+	}*/
 
 	for _, payload := range ResponsePayloads {
 		payload.Origin = map[string]string{
