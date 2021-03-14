@@ -188,12 +188,6 @@ func (r *application) Notify(text string) *application {
 	return r.SendRequest(payloads.NewNotifyPayload(text))
 }
 
-// Pass
-func (r *application) Pass(arg interface{}) interface{} {
-	r.Send(arg)
-	return arg
-}
-
 // Boolean
 func (r *application) Bool(bool bool) *application {
 	return r.SendRequest(payloads.NewBoolPayload(bool))
