@@ -10,7 +10,7 @@ func NewJsonStringPayload(value interface{}) Payload {
 		panic(err)
 	}
 
-	return Payload{
+	return Payload {
 		Type: "json_string",
 		Content: map[string]interface{} {
 			"value": string(jsonValue),

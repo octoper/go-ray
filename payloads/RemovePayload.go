@@ -2,7 +2,7 @@ package payloads
 
 // NewRemovePayload creates a new Remove Payload
 func NewRemovePayload() Payload {
-	return Payload{
+	return Payload {
 		Type: "remove",
 	}
 }
