@@ -342,7 +342,7 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 		Uuid:     r.Uuid(),
 		Payloads: payloadsMap,
 		Meta: map[string]string{
-			"ray_package_version": "0.0.3",
+			"ray_package_version": "0.1.4",
 		},
 	}
 
