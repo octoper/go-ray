@@ -4,12 +4,13 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"encoding/json"
-	"github.com/google/uuid"
-	payloads "github.com/octoper/go-ray/payloads"
-	"github.com/octoper/go-ray/utils"
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/octoper/go-ray/payloads"
+	"github.com/octoper/go-ray/utils"
 )
 
 // Callable mocks a function that returns a boolean
@@ -21,7 +22,7 @@ type application struct {
 	port         int
 	enabled      bool
 	sentPayloads []payloads.Payload
-	client utils.Client
+	client       utils.Client
 }
 
 type request struct {
@@ -31,10 +32,10 @@ type request struct {
 }
 
 var applicationConfig = application{
-	host:    "127.0.0.1",
-	port:    23517,
-	enabled: true,
-	client: *utils.NewClient(),
+	host:    getHostFromEnv(),
+	port:    getPortFromEnv(),
+	enabled: getEnabledFromEnv(),
+	client:  *utils.NewClient(),
 }
 
 // NewRay creates a New Ray instance
@@ -208,7 +209,7 @@ func (r *application) String(str string) *application {
 	return r.SendRequest(payloads.NewStringPayload(str))
 }
 
-//Time
+// Time
 func (r *application) Time(time time.Time) *application {
 	return r.SendRequest(payloads.NewTimePayload(time, "2006-01-02 15:04:05"))
 }
@@ -232,7 +233,7 @@ func (r *application) Pause() *application {
 	r.SendRequest(payloads.NewCreateLockPayload(hex.EncodeToString(lockName)))
 
 	for {
-		time.Sleep(time.Second);
+		time.Sleep(time.Second)
 
 		lockExistsClient := r.Client().LockExists(hex.EncodeToString(lockName))
 		if !lockExistsClient.Active {
@@ -354,7 +355,7 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 
 	_, err := client.Sent(requestPayload)
 
-	//Handle Error
+	// Handle Error
 	if err != nil {
 		panic("Couldn't connect to Ray It doesn't seem to be running at " + Ray().Host() + ":" + strconv.Itoa(Ray().Port()))
 	}
@@ -362,3 +363,32 @@ func (r *application) SendRequest(ResponsePayloads ...payloads.Payload) *applica
 	return r
 }
 
+// Try to read env variable, return fallback if not found
+func getHostFromEnv() string {
+	if value, ok := os.LookupEnv("RAY_HOST"); ok {
+		return value
+	}
+	return "127.0.0.1"
+}
+
+func getPortFromEnv() int {
+	if value, ok := os.LookupEnv("RAY_PORT"); ok {
+		port, err := strconv.Atoi(value)
+		if err != nil {
+			panic(err)
+		}
+		return port
+	}
+	return 23517
+}
+
+func getEnabledFromEnv() bool {
+	if value, ok := os.LookupEnv("RAY_ENABLED"); ok {
+		enabled, err := strconv.ParseBool(value)
+		if err != nil {
+			panic(err)
+		}
+		return enabled
+	}
+	return true
+}
