@@ -15,10 +15,9 @@ func NewDumpPayload(value interface{}) Payload {
 			width: 100%;
 			padding: 10px 10px;
 			height: auto;
-			background-color: #f3f3f3;
 		}
 	</style>`
-	md := []byte("``` \n"+spew.Sdump(value)+"\n```")
+	md := []byte("``` \n" + spew.Sdump(value) + "\n```")
 	output := markdown.ToHTML(md, nil, nil)
-	return NewCustomPayload(style+`<div class="go-dump">`+string(output) + "</div>", "")
+	return NewCustomPayload(style+`<div class="go-dump">`+string(output)+"</div>", "")
 }
